@@ -6,21 +6,19 @@
   background-color: lightblue;
 }
 
-
 .card {
-  padding: 2em;
+  margin-bottom: 2rem; /* Adds space between cards */
 }
 
 .custom-rounded-navbar {
-  border-radius: 25px; /* stärkere Abrundung */
-  background-color: #f8f9fa; /* Hintergrundfarbe wie Bootstrap 'bg-light' */
+  border-radius: 25px; /* stronger rounding */
+  background-color: #f8f9fa; /* background color like Bootstrap 'bg-light' */
 }
 
-.analyse-container{
- text-align: center;
- padding-top : 200px;
- display: flex;
- gap: 32px;
- padding-left: 160px;
- 
+.analyse-container {
+  text-align: center;
+  padding-top: 50px;
+  display: flex;
+  gap: 32px;
+  justify-content: center; /* Centers the cards if container is wider */
 }

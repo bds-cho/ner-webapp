@@ -1,32 +1,22 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
-
-class Navbar extends Component {
-    state = {  } 
-    render() { 
+class Navigationbar  extends Component {
+    render() {
         return (
-            <nav className="navbar navbar-expand-lg custom-rounded-navbar">
-                <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                              Navbar Inhalt    
-                            {/* <Link className="nav-link" to="/login">Login</Link> */}
-
-                            </li>
-                            <li className="nav-item">
-                            {/* <Link className="nav-link" to="/new-account">New Account</Link> */}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <Navbar bg="light" expand="lg" className="custom-rounded-navbar">
+                <Container>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/login">Login</Nav.Link>
+                            <Nav.Link href="/new-account">New Account</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
         );
     }
 }
 
-export default Navbar;
+export default Navigationbar ;
