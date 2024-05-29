@@ -8,6 +8,12 @@
 
 - run `python manage.py runserver` to start the development server
 
+# Access to Django Admin Portal
+
+- go to /admin
+- Username: admin
+- Password: password
+
 <br>
 <br>
 <br>
@@ -41,3 +47,5 @@ b) with pipenv ( = also a dependency manager):
 ## 2. step: I create the django project:
 
 - `django-admin startproject sksy_backend .` to create a django project in the current directory
+
+
