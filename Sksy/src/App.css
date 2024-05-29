@@ -23,7 +23,16 @@
   display: flex;
   gap: 32px;
   justify-content: center; 
+  flex-direction: row;
 }
+
+@media (max-width: 1080px) {
+  .analyse-container {
+    flex-direction: column; /* Ändert die Flex-Richtung zu Spalte auf kleinen Bildschirmen */
+  }
+}
+
+
 
 .card-img-top {
   width: 100%;  /* Stellt sicher, dass das Bild die Breite der Karte ausfüllt */
