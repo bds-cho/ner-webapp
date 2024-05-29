@@ -1,9 +1,11 @@
 #root {
   max-width: 1980px;
   margin: 0 auto;
-  padding: 2rem;
+  padding-top: 2rem;
   text-align: center;
   background-color: lightblue;
+  padding-bottom: 60px;
+
 }
 
 .card {
@@ -20,5 +22,19 @@
   padding-top: 50px;
   display: flex;
   gap: 32px;
-  justify-content: center; /* Centers the cards if container is wider */
+  justify-content: center; 
+}
+
+.card-img-top {
+  width: 100%;  /* Stellt sicher, dass das Bild die Breite der Karte ausfüllt */
+  height: 300px; /* Begrenzt die Höhe des Bildes */
+  object-fit: cover; /* Sorgt dafür, dass das Bild seine Proportionen behält, während es die gebundenen Maße ausfüllt */
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: lightblue;
+
 }

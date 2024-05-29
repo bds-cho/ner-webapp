@@ -4,6 +4,7 @@ import Navigationbar from './components/navbar'
 import Analyse from './components/analyse'
 import Login_card from './components/login_card'
 import NewACC_card from './components/NewACC_card'
+import Footer from './components/Footer'
 
 import LoginPage from './pages/LoginPage';
 import NewAccountPage from './pages/NewAccountPage';
@@ -19,8 +20,12 @@ class App extends Component {
           <div className="analyse-container">
             <Analyse /><Login_card /><NewACC_card />
           </div>
+        
         </div>
+        <Footer />
+
       </React.Fragment>
+
     );
   }
 }

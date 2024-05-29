@@ -5,7 +5,7 @@ class NewACCard extends Component {
     render() {
       return (
         <Card style={{ width: '30rem' }}>
-          <Card.Img variant="top" src="/assets/signup.png" />
+        <Card.Img variant="top" src="/assets/signup.png" className="custom-card-img"/>
           <Card.Body>
             <Card.Title>Account anlegen</Card.Title>
             <Card.Text>
