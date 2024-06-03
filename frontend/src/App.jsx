@@ -1,36 +1,34 @@
-import React from 'react';
-import './App.css'
-import Navigationbar from './components/navbar'
-import Analyse from './components/analyse'
-import Login_card from './components/login_card'
-import NewACC_card from './components/NewACC_card'
-import Footer from './components/Footer'
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import LoginPage from './pages/LoginPage';
-import NewAccountPage from './pages/NewAccountPage';
+import "./App.css";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-import { HelloBackend } from './components/HelloBackend';
+import StartPage from "./pages/StartPage";
+import LoginPage from "./pages/LoginPage";
+import NewAccountPage from "./pages/NewAccountPage";
+import TextAnalysePage from "./pages/TextAnalysePage";
 
-const queryClient = new QueryClient()
+import Navbar from "./components/Navbar";
 
 function App() {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <Navigationbar />
-        <div className="container mt-4">
-          <h1>Willkommen auf unserer Text-Analyse Webseite!</h1>
-          <div className="analyse-container">
-            <Analyse /><Login_card /><NewACC_card /><HelloBackend />
-          </div>
-        
-        </div>
-          <Footer />
-      </QueryClientProvider>
-    );
+  return (
+    <BrowserRouter>
+      <Navbar></Navbar>
+
+      <Routes>
+        <Route path="/" element={<StartPage></StartPage>}></Route>
+        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+        <Route
+          path="/new-account"
+          element={<NewAccountPage></NewAccountPage>}
+        ></Route>
+        <Route
+          path="/text-analyse"
+          element={<TextAnalysePage></TextAnalysePage>}
+        ></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
