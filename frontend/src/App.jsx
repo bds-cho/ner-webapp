@@ -9,6 +9,7 @@ import NewAccountPage from "./pages/NewAccountPage";
 import TextAnalysePage from "./pages/TextAnalysePage";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           element={<TextAnalysePage></TextAnalysePage>}
         ></Route>
       </Routes>
+
+      <Footer></Footer>
     </BrowserRouter>
   );
 }

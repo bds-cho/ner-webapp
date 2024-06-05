@@ -5,7 +5,6 @@
   text-align: center;
   background-color: lightblue;
   padding-bottom: 60px;
-
 }
 
 .card {
@@ -22,7 +21,7 @@
   padding-top: 50px;
   display: flex;
   gap: 32px;
-  justify-content: center; 
+  justify-content: center;
   flex-direction: row;
 }
 
@@ -32,10 +31,8 @@
   }
 }
 
-
-
 .card-img-top {
-  width: 100%;  /* Stellt sicher, dass das Bild die Breite der Karte ausfüllt */
+  width: 100%; /* Stellt sicher, dass das Bild die Breite der Karte ausfüllt */
   height: 300px; /* Begrenzt die Höhe des Bildes */
   object-fit: cover; /* Sorgt dafür, dass das Bild seine Proportionen behält, während es die gebundenen Maße ausfüllt */
 }
@@ -45,5 +42,5 @@
   bottom: 0;
   width: 100%;
   background-color: lightblue;
-
+  height: 100px;
 }

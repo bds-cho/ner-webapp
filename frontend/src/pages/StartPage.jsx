@@ -2,8 +2,6 @@ import AnalyseCard from "../components/cards/AnalyseCard";
 import LoginCard from "../components/cards/LoginCard";
 import NewAccountCard from "../components/cards/NewAccountCard";
 
-import Footer from "../components/Footer";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelloBackend } from "../components/HelloBackend";
 
@@ -21,7 +19,6 @@ function StartPage() {
           <HelloBackend />
         </div>
       </div>
-      <Footer />
     </QueryClientProvider>
   );
 }
