@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { registerUser } from "../api/authentication";
 
 function NewAccountPage() {
   const [name, setName] = useState("");
@@ -12,10 +13,11 @@ function NewAccountPage() {
     e.preventDefault();
     // Implement your signup logic here
     if (password === confirmPassword) {
-      console.log("Name:", name);
-      console.log("Email:", email);
-      console.log("Password:", password);
+      // console.log("Name:", name);
+      // console.log("Email:", email);
+      // console.log("Password:", password);
       // You can add further logic such as API calls here
+      registerUser(email, password, name, surname);
     } else {
       alert("Passwords do not match!");
     }

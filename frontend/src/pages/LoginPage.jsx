@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { loginUser } from "../api/authentication";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -8,8 +9,10 @@ function LoginPage() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Implement your login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+
+    loginUser(email, password);
   };
 
   return (
@@ -40,7 +43,15 @@ function LoginPage() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100 mt-4">
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100 mt-4"
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   loginUser(email, password);
+              // }}
+            >
               Login
             </Button>
           </Form>
