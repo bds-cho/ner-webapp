@@ -1,26 +1,40 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Card, Alert } from "react-bootstrap";
 import { loginUser } from "../api/authentication";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      navigate("/text-analyse");
+    },
+  });
+
   const handleLogin = (e) => {
     e.preventDefault();
-    // Implement your login logic here
-    // console.log("Email:", email);
-    // console.log("Password:", password);
-
-    loginUser(email, password);
+    loginMutation.mutate({ email, password });
   };
 
   return (
-    <Container>
+    <Card
+      style={{
+        width: "100%",
+        maxWidth: "500px",
+        margin: "2rem auto",
+        padding: "2rem",
+      }}
+    >
       <Row className="justify-content-md-center">
-        <Col md="4">
+        <Col>
           <h2 className="text-center">Login</h2>
-          <Form onSubmit={handleLogin}>
+          <Form onSubmit={handleLogin} style={{ textAlign: "left" }}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -31,7 +45,6 @@ function LoginPage() {
                 required
               />
             </Form.Group>
-
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -47,17 +60,19 @@ function LoginPage() {
               variant="primary"
               type="submit"
               className="w-100 mt-4"
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   loginUser(email, password);
-              // }}
+              disabled={loginMutation.isLoading}
             >
               Login
             </Button>
+            {loginMutation.isError && (
+              <Alert variant="danger" className="mt-2">
+                {loginMutation.error.message}
+              </Alert>
+            )}
           </Form>
         </Col>
       </Row>
-    </Container>
+    </Card>
   );
 }
 
