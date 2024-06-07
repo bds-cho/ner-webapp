@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./App.css";
 
@@ -8,29 +8,40 @@ import LoginPage from "./pages/LoginPage";
 import NewAccountPage from "./pages/NewAccountPage";
 import TextAnalysePage from "./pages/TextAnalysePage";
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { AuthenticatedLayout } from "./pages/AuthenticatedLayout";
+import { UnauthenticatedLayout } from "./pages/Unauthenticatedlayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: "/text-analyse",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        path: "/text-analyse",
+        element: <TextAnalysePage />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <UnauthenticatedLayout />,
+    children: [
+      { path: "/", element: <StartPage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/new-account", element: <NewAccountPage /> },
+      { path: "/text-analyse", element: <TextAnalysePage /> },
+    ],
+  },
+]);
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar></Navbar>
-
-      <Routes>
-        <Route path="/" element={<StartPage></StartPage>}></Route>
-        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
-        <Route
-          path="/new-account"
-          element={<NewAccountPage></NewAccountPage>}
-        ></Route>
-        <Route
-          path="/text-analyse"
-          element={<TextAnalysePage></TextAnalysePage>}
-        ></Route>
-      </Routes>
-
-      <Footer></Footer>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
