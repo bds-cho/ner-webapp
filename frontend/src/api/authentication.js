@@ -1,5 +1,7 @@
-export async function loginUser(email, password) {
-  fetch("/api/login/", {
+import { useQuery } from "@tanstack/react-query";
+
+export async function loginUser({ email, password }) {
+  const response = await fetch("/api/login/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -8,25 +10,18 @@ export async function loginUser(email, password) {
       email: email,
       password: password,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Handle successful response from Django
-      console.log(data);
-    })
-    .catch((error) => {
-      // Handle error
-      console.error("There was a problem with your fetch operation:", error);
-    });
+  });
+  if (!response.ok) {
+    if (response.status >= 400 && response.status < 500) {
+      throw new Error("Invalid email or password");
+    }
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
 }
 
-export async function registerUser(email, password, name, surname) {
-  fetch("/api/register/", {
+export async function registerUser({ email, password, name, surname }) {
+  const response = await fetch("/api/register/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,19 +32,33 @@ export async function registerUser(email, password, name, surname) {
       name: name,
       surname: surname,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Handle successful response from Django
-      console.log(data);
-    })
-    .catch((error) => {
-      // Handle error
-      console.error("There was a problem with your fetch operation:", error);
-    });
+  });
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+}
+
+/**
+ * 
+ * @returns {Promise<{isAuthenticated: false} | {isAuthenticated: true; username: string}}>}
+ 
+ */
+export async function getSession() {
+  const response = await fetch("/api/session");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  const data = await response.json();
+
+  return data;
+}
+
+export function useGetSession() {
+  const query = useQuery({
+    queryKey: ["session"],
+    queryFn: getSession,
+    retry: 1,
+  });
+  return query;
 }
