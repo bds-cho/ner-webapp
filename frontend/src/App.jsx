@@ -1,36 +1,48 @@
-import React from 'react';
-import './App.css'
-import Navigationbar from './components/navbar'
-import Analyse from './components/analyse'
-import Login_card from './components/login_card'
-import NewACC_card from './components/NewACC_card'
-import Footer from './components/Footer'
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import LoginPage from './pages/LoginPage';
-import NewAccountPage from './pages/NewAccountPage';
+import "./App.css";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-import { HelloBackend } from './components/HelloBackend';
+import StartPage from "./pages/StartPage";
+import LoginPage from "./pages/LoginPage";
+import NewAccountPage from "./pages/NewAccountPage";
+import TextAnalysePage from "./pages/TextAnalysePage";
 
-const queryClient = new QueryClient()
+import { AuthenticatedLayout } from "./pages/AuthenticatedLayout";
+import { UnauthenticatedLayout } from "./pages/Unauthenticatedlayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: "/text-analyse",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        path: "/text-analyse",
+        element: <TextAnalysePage />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <UnauthenticatedLayout />,
+    children: [
+      { path: "/", element: <StartPage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/new-account", element: <NewAccountPage /> },
+      { path: "/text-analyse", element: <TextAnalysePage /> },
+    ],
+  },
+]);
 
 function App() {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <Navigationbar />
-        <div className="container mt-4">
-          <h1>Willkommen auf unserer Text-Analyse Webseite!</h1>
-          <div className="analyse-container">
-            <Analyse /><Login_card /><NewACC_card /><HelloBackend />
-          </div>
-        
-        </div>
-          <Footer />
-      </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
