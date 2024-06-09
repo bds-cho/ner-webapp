@@ -7,6 +7,7 @@ import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
 import NewAccountPage from "./pages/NewAccountPage";
 import TextAnalysePage from "./pages/TextAnalysePage";
+import UserFeedPage from "./pages/UserFeedPage";
 
 import { AuthenticatedLayout } from "./pages/AuthenticatedLayout";
 import { UnauthenticatedLayout } from "./pages/Unauthenticatedlayout";
@@ -26,6 +27,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/user-feed",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        path: "/user-feed",
+        element: <UserFeedPage />,
+      },
+    ],
+  },
+  {
     path: "/",
     element: <UnauthenticatedLayout />,
     children: [
@@ -33,6 +44,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
       { path: "/new-account", element: <NewAccountPage /> },
       { path: "/text-analyse", element: <TextAnalysePage /> },
+
     ],
   },
 ]);
