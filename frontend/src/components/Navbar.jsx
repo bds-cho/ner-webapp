@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useGetSession } from "../api/authentication";
+
+import LoggedInDropdown from "./LoggedInDropdown"
+
 export function Navigationbar() {
   const { data } = useGetSession();
-
   return (
     <Navbar bg="light" expand="lg" className="custom-rounded-navbar">
       <Container>
@@ -23,7 +25,7 @@ export function Navigationbar() {
               New Account
             </Nav.Link>
           </Nav>
-          {data?.isAuthenticated && <span>Eingeloggt als {data.username}</span>}
+          {data?.isAuthenticated && <LoggedInDropdown email={data.username}></LoggedInDropdown>}
         </Navbar.Collapse>
       </Container>
     </Navbar>

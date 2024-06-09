@@ -20,6 +20,13 @@ export async function loginUser({ email, password }) {
   return response.json();
 }
 
+export async function logoutUser() {
+  const response = await fetch("/api/logout");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+}
+
 export async function registerUser({ email, password, name, surname }) {
   const response = await fetch("/api/register/", {
     method: "POST",

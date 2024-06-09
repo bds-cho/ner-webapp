@@ -2,7 +2,7 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 def index(request):
@@ -60,3 +60,12 @@ def session_view(request):
         return JsonResponse({'isAuthenticated': False})
 
     return JsonResponse({'isAuthenticated': True, 'username': request.user.username})
+
+
+@csrf_exempt
+def logoutUser(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return JsonResponse({'message': 'User logged out successfully'}, status=200)
+    else:
+        return JsonResponse({'error': 'User is not logged in'}, status=400)
