@@ -60,12 +60,12 @@ function TextAnalysePage() {
     <div>
       <br />
       <h1>Text Analyse</h1>
-      <p>Geben Sie hier das Text ein oder laden Sie eine Datei hoch.</p>
+      <p>Geben Sie hier Ihren Text ein oder laden Sie eine Datei hoch.</p>
       <br />
       <Container>
       <Form>
         <Form.Group controlId="formTextarea">
-          <Form.Label>Geben Sie hier das Text ein</Form.Label>
+          <Form.Label>Geben Sie hier Ihren Text ein</Form.Label>
           <Form.Control
             as="textarea"
             value={text}
