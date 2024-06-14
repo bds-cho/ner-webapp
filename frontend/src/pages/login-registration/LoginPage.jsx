@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Alert } from "react-bootstrap";
-import { loginUser } from "../api/authentication";
+import { loginUser } from "../../api/authentication";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -10,16 +10,15 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      queryClient.invalidateQueries('session')
-      setTimeout(()=>{
+      queryClient.invalidateQueries("session");
+      setTimeout(() => {
         navigate("/text-analyse");
-      }, 100)
-        
+      }, 100);
     },
   });
 

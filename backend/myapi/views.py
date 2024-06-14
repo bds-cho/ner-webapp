@@ -5,11 +5,18 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from .models import UserData
+from .serializers import UserDataSerializer
+
+########################################################
+
 def index(request):
     res = {
         "hello": "world"
     }
     return JsonResponse(res)
+
+########################################################
 
 @csrf_exempt
 def loginUser(request):
@@ -61,7 +68,6 @@ def session_view(request):
 
     return JsonResponse({'isAuthenticated': True, 'username': request.user.username})
 
-
 @csrf_exempt
 def logoutUser(request):
     if request.user.is_authenticated:
@@ -69,3 +75,54 @@ def logoutUser(request):
         return JsonResponse({'message': 'User logged out successfully'}, status=200)
     else:
         return JsonResponse({'error': 'User is not logged in'}, status=400)
+
+#########################################################
+
+@csrf_exempt
+def add_data(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)  # Parse JSON data from request body
+        serializer = UserDataSerializer(data=data)
+        if serializer.is_valid():
+            user_data = serializer.save(user=request.user)
+            return JsonResponse({'id': user_data.id}, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+    return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
+
+@csrf_exempt
+def get_user_data_all(request):
+    if request.method == 'GET':
+        user_data = UserData.objects.filter(user=request.user)
+        serializer = UserDataSerializer(user_data, many=True)
+        
+        return JsonResponse(serializer.data, safe=False, content_type="application/json")  # safe=False for lists
+    else:
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
+def get_user_data_public(request):
+    if request.method == 'GET':
+        user_data = UserData.objects.filter(user=request.user, is_public=True)
+        serializer = UserDataSerializer(user_data, many=True)
+        return JsonResponse(serializer.data, safe=False)  # safe=False for lists
+    else:
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
+def get_user_data_private(request):
+    if request.method == 'GET':
+        user_data = UserData.objects.filter(user=request.user, is_public=False)
+        serializer = UserDataSerializer(user_data, many=True)
+        return JsonResponse(serializer.data, safe=False)  # safe=False for lists
+    else:
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
+def get_public_data_all(request):
+    if request.method == 'GET':
+        public_data = UserData.objects.filter(is_public=True)
+        serializer = UserDataSerializer(public_data, many=True)
+        return JsonResponse(serializer.data, safe=False)  # safe=False for lists
+    else:
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)

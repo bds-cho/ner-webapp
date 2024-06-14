@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Stack } from "react-bootstrap";
-import { registerUser } from "../api/authentication";
+import { registerUser } from "../../api/authentication";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
