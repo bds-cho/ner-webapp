@@ -24,17 +24,11 @@ function Profile() {
             <h6>{user.username}</h6>
           </Card.Title>
 
-          {/* display user data - private and public */}
           <div>
             <h5>All data:</h5>
             {userDataAll && userDataAll.length > 0 ? (
               userDataAll.map((item, index) => (
                 <TextItem key={index} text={item.text}></TextItem>
-                // <div key={item.id}>
-                //   <p>
-                //     {item.text} + {item.user.username}
-                //   </p>
-                // </div>
               ))
             ) : (
               <p>No user data available</p>

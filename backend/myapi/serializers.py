@@ -8,8 +8,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'first_name', 'last_name']  # Add more fields as needed
 
-class UserDataSerializer(serializers.ModelSerializer):
+class GetDataSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     class Meta:
         model = UserData
         fields = ['text', 'is_public', 'user']
+
+
+class SaveDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = ['text', 'is_public']
