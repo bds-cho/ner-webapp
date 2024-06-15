@@ -40,7 +40,7 @@ function Profile() {
             {userDataAll && userDataAll.length > 0 ? (
               userDataAll
                 .filter((item) => {
-                  item.is_public;
+                  return item.is_public;
                 })
                 .map((item, index) => (
                   <div key={index} className="mb-2">
@@ -48,14 +48,14 @@ function Profile() {
                   </div>
                 ))
             ) : (
-              <p>No user data available</p>
+              <p>No public user data available</p>
             )}
 
             <h5>Private data:</h5>
             {userDataAll && userDataAll.length > 0 ? (
               userDataAll
                 .filter((item) => {
-                  !item.is_public;
+                  return !item.is_public;
                 })
                 .map((item, index) => (
                   <div key={index} className="mb-2">
@@ -63,7 +63,7 @@ function Profile() {
                   </div>
                 ))
             ) : (
-              <p>No user data available</p>
+              <p>No private user data available</p>
             )}
           </div>
         </Card.Body>

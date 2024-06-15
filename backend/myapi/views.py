@@ -96,17 +96,7 @@ def get_user_data_all(request):
     if request.method == 'GET':
         user_data = UserData.objects.filter(user=request.user)
         serializer = UserDataSerializer(user_data, many=True)
-        
-        # test_object = {
-        #     "text": "test text",
-        #     "is_public": True,
-        # }
-        # json_response = json.dumps(test_object, indent=4)
-        # return JsonResponse(json.dumps(test_object))
-        # return HttpResponse(json.dumps(test_object))
-        # return JsonResponse(test_object, safe=False, content_type="application/json")
-
-        return JsonResponse(serializer.data, safe=False, content_type="application/json")  # safe=False for lists
+        return JsonResponse(serializer.data, safe=False, content_type="application/json")
     else:
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
 

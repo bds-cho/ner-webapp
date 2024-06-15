@@ -38,7 +38,7 @@ function TextAnalysePage() {
       return;
     }
 
-    addUserData(text, false);
+    addUserData(text, true);
   };
 
   return (

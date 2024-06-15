@@ -5,7 +5,6 @@ export async function addUserData(text, is_public) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ' + yourAuthToken, // Ensure user is authenticated
     },
     body: JSON.stringify({
       text: text, // string
@@ -31,8 +30,6 @@ export function useGetUserDataAll() {
   });
   return query;
 }
-
-// Function to fetch all user data
 async function getUserDataAll() {
   try {
     const response = await fetch("/api/get_user_data_all/", {
@@ -62,7 +59,6 @@ export function useGetUserDataPublic() {
   });
   return query;
 }
-
 async function getUserDataPublic() {
   try {
     const response = await fetch("/api/get_user_data_public/", {
@@ -92,7 +88,6 @@ export function useGetUserDataPrivate() {
   });
   return query;
 }
-
 async function getUserDataPrivate() {
   try {
     const response = await fetch("/api/get_user_data_private/", {
@@ -122,7 +117,6 @@ export function useGetPublicDataAll() {
   });
   return query;
 }
-
 async function getPublicDataAll() {
   try {
     const response = await fetch("/api/get_public_data_all/", {
