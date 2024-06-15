@@ -38,27 +38,7 @@ function TextAnalysePage() {
       return;
     }
 
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("text", text);
-    //   formData.append("file", fileContent);
-
-    //   const response = await fetch("call-backend-api-here", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-
-    //   // Handle response as needed
-    //   if (response.ok) {
-    //     console.log("Request successful");
-    //   } else {
-    //     console.error("Request failed");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
-
-    addUserData(text, true);
+    addUserData(text, false);
   };
 
   return (

@@ -115,7 +115,7 @@ def get_user_data_public(request):
     if request.method == 'GET':
         user_data = UserData.objects.filter(user=request.user, is_public=True)
         serializer = UserDataSerializer(user_data, many=True)
-        return JsonResponse(serializer.data, safe=False)  # safe=False for lists
+        return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
 

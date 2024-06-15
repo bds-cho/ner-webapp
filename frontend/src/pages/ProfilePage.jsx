@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useGetSession } from "../api/authentication";
-import { getUserDataAll } from "../api/database_communication.js";
+import {
+  useGetUserDataAll,
+  useGetUserDataPrivate,
+  useGetUserDataPublic,
+} from "../api/database_communication.js";
 
 function Profile() {
-  const { data } = useGetSession();
-  const [userData, setUserData] = useState(null); // State to hold fetched user data
+  const { data: user } = useGetSession();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getUserDataAll();
-        setUserData(userData); // Set the fetched data to the state
-      } catch (error) {
-        console.error("Error fetching all user data:", error);
-      }
-    }
-    fetchData(); // Call the async function
-  }, []); // Empty dependency array ensures useEffect runs only once after initial render
+  const { data: userDataAll } = useGetUserDataAll();
 
   return (
     <Container className="mt-4">
@@ -25,12 +18,54 @@ function Profile() {
         <Card.Body>
           <Card.Title>
             <h3>
-              {data.first_name} {data.last_name}
+              {user.first_name} {user.last_name}
             </h3>
-            <h6>{data.username}</h6>
+            <h6>{user.username}</h6>
           </Card.Title>
 
           {/* display user data - private and public */}
+          <div>
+            <h5>All data:</h5>
+            {userDataAll && userDataAll.length > 0 ? (
+              userDataAll.map((item, index) => (
+                <div key={index} className="mb-2">
+                  <p>{item.text}</p>
+                </div>
+              ))
+            ) : (
+              <p>No user data available</p>
+            )}
+
+            <h5>Public data:</h5>
+            {userDataAll && userDataAll.length > 0 ? (
+              userDataAll
+                .filter((item) => {
+                  item.is_public;
+                })
+                .map((item, index) => (
+                  <div key={index} className="mb-2">
+                    <p>{item.text}</p>
+                  </div>
+                ))
+            ) : (
+              <p>No user data available</p>
+            )}
+
+            <h5>Private data:</h5>
+            {userDataAll && userDataAll.length > 0 ? (
+              userDataAll
+                .filter((item) => {
+                  !item.is_public;
+                })
+                .map((item, index) => (
+                  <div key={index} className="mb-2">
+                    <p>{item.text}</p>
+                  </div>
+                ))
+            ) : (
+              <p>No user data available</p>
+            )}
+          </div>
         </Card.Body>
       </Card>
     </Container>
