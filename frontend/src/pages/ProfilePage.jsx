@@ -23,10 +23,12 @@ function Profile() {
     <Container className="mt-4">
       <Card>
         <Card.Body>
-          <Card.Title>{"My Profile"}</Card.Title>
-          <div>
-            <p>{data.username}</p>
-          </div>
+          <Card.Title>
+            <h3>
+              {data.first_name} {data.last_name}
+            </h3>
+            <h6>{data.username}</h6>
+          </Card.Title>
 
           {/* display user data - private and public */}
         </Card.Body>

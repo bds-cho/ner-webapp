@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from .models import UserData
 from .serializers import UserDataSerializer
 
+from rest_framework.response import Response
 ########################################################
 
 def index(request):
@@ -66,7 +67,7 @@ def session_view(request):
     if not request.user.is_authenticated:
         return JsonResponse({'isAuthenticated': False})
 
-    return JsonResponse({'isAuthenticated': True, 'username': request.user.username})
+    return JsonResponse({'isAuthenticated': True, 'username': request.user.username, 'first_name': request.user.first_name, 'last_name': request.user.last_name})
 
 @csrf_exempt
 def logoutUser(request):
@@ -96,6 +97,15 @@ def get_user_data_all(request):
         user_data = UserData.objects.filter(user=request.user)
         serializer = UserDataSerializer(user_data, many=True)
         
+        # test_object = {
+        #     "text": "test text",
+        #     "is_public": True,
+        # }
+        # json_response = json.dumps(test_object, indent=4)
+        # return JsonResponse(json.dumps(test_object))
+        # return HttpResponse(json.dumps(test_object))
+        # return JsonResponse(test_object, safe=False, content_type="application/json")
+
         return JsonResponse(serializer.data, safe=False, content_type="application/json")  # safe=False for lists
     else:
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
