@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container, Card } from "react-bootstrap";
 import { useGetSession } from "../api/authentication";
 import {
@@ -6,6 +6,7 @@ import {
   useGetUserDataPrivate,
   useGetUserDataPublic,
 } from "../api/database_communication.js";
+import TextItem from "../components/TextItem.jsx";
 
 function Profile() {
   const { data: user } = useGetSession();
@@ -28,9 +29,12 @@ function Profile() {
             <h5>All data:</h5>
             {userDataAll && userDataAll.length > 0 ? (
               userDataAll.map((item, index) => (
-                <div key={index} className="mb-2">
-                  <p>{item.text}</p>
-                </div>
+                <TextItem key={index} text={item.text}></TextItem>
+                // <div key={item.id}>
+                //   <p>
+                //     {item.text} + {item.user.username}
+                //   </p>
+                // </div>
               ))
             ) : (
               <p>No user data available</p>
@@ -43,9 +47,7 @@ function Profile() {
                   return item.is_public;
                 })
                 .map((item, index) => (
-                  <div key={index} className="mb-2">
-                    <p>{item.text}</p>
-                  </div>
+                  <TextItem key={index} text={item.text}></TextItem>
                 ))
             ) : (
               <p>No public user data available</p>
@@ -58,9 +60,7 @@ function Profile() {
                   return !item.is_public;
                 })
                 .map((item, index) => (
-                  <div key={index} className="mb-2">
-                    <p>{item.text}</p>
-                  </div>
+                  <TextItem key={index} text={item.text}></TextItem>
                 ))
             ) : (
               <p>No private user data available</p>
