@@ -15,4 +15,5 @@ urlpatterns = [
     path('get_user_data_public/', views.get_user_data_public, name='get_user_data_public'),
     path('get_user_data_private/', views.get_user_data_private, name='get_user_data_private'),
     path('get_public_data_all/', views.get_public_data_all, name='get_public_data_all'),
+    path('delete_user_data/<uuid:pk>', views.delete_data, name='delete_user_data'),
 ]

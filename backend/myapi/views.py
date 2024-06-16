@@ -9,6 +9,7 @@ from .models import UserData
 from .serializers import GetDataSerializer, SaveDataSerializer
 
 from rest_framework import status
+from rest_framework.decorators import api_view
 ########################################################
 
 def index(request):
@@ -126,3 +127,12 @@ def get_public_data_all(request):
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
+def delete_data(request, pk):
+    if request.method == 'DELETE':
+        item = UserData.objects.get(id=pk)
+        item.delete()
+    return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=200)
+
+        
