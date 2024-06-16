@@ -1,12 +1,21 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Badge, Card, Col, Row } from "react-bootstrap";
 import "../styles/TextItem.css";
 
-const TextItem = ({ text }) => {
+const TextItem = ({ text, is_public }) => {
   return (
     <Card className="mb-3 text-item-card">
       <Card.Body>
-        <Card.Text>{text}</Card.Text>
+        <Row>
+          <Col>
+            <Card.Text>{text}</Card.Text>
+          </Col>
+          <Col xs="auto">
+            <Badge bg={is_public ? "success" : "danger"}>
+              {is_public ? "Public" : "Private"}
+            </Badge>
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );
