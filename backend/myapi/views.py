@@ -82,7 +82,7 @@ def logoutUser(request):
 @csrf_exempt
 def add_data(request):
     if request.method == 'POST':
-        data = json.loads(request.body)  # Parse JSON data from request body
+        data = json.loads(request.body)
         serializer = SaveDataSerializer(data=data)
         if serializer.is_valid():
             user_data = serializer.save(user=request.user)
