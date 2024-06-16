@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
-export async function addUserData(text, is_public) {
+export async function addUserData({ text, is_public }) {
   const response = await fetch("/api/add_data/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      text: text, // string
-      is_public: is_public, // bool
+      text, // string
+      is_public, // bool
     }),
   })
     .then((response) => response.json())
@@ -24,7 +24,7 @@ export async function addUserData(text, is_public) {
 
 export function useGetUserDataAll() {
   const query = useQuery({
-    queryKey: ["get_user_data_all"],
+    queryKey: ["get_user_data"],
     queryFn: getUserDataAll,
     retry: 1,
   });
@@ -53,7 +53,7 @@ async function getUserDataAll() {
 
 export function useGetUserDataPublic() {
   const query = useQuery({
-    queryKey: ["get_user_data_public"],
+    queryKey: ["get_user_data"],
     queryFn: getUserDataPublic,
     retry: 1,
   });
@@ -82,7 +82,7 @@ async function getUserDataPublic() {
 
 export function useGetUserDataPrivate() {
   const query = useQuery({
-    queryKey: ["get_user_data_private"],
+    queryKey: ["get_user_data"],
     queryFn: getUserDataPrivate,
     retry: 1,
   });
@@ -111,7 +111,7 @@ async function getUserDataPrivate() {
 
 export function useGetPublicDataAll() {
   const query = useQuery({
-    queryKey: ["get_public_data_all"],
+    queryKey: ["get_user_data"],
     queryFn: getPublicDataAll,
     retry: 1,
   });

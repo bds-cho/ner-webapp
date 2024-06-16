@@ -1,10 +1,26 @@
 import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 import { addUserData } from "../api/database_communication.js";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 function TextAnalysePage() {
   const [text, setText] = useState("");
   const [fileContent, setFileContent] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  const addUserDataMutation = useMutation({
+    mutationFn: addUserData,
+    onSuccess: (data) => {
+      console.log("Data added successfully", data);
+      qc.invalidateQueries("get_user_data");
+      // TODO: add page for single result
+      navigate("/profile");
+    },
+  });
 
   // Handle text area input
   const handleTextChange = (e) => {
@@ -37,17 +53,21 @@ function TextAnalysePage() {
       console.error("Geben Sie das Text ein oder laden Sie eine Datei hoch");
       return;
     }
-
-    addUserData(text, true);
+    addUserDataMutation.mutate({ text, is_public: isPublic });
   };
 
   return (
-    <div>
-      <br />
+    <Card
+      style={{
+        width: "100%",
+        maxWidth: "750px",
+        margin: "2rem auto",
+        padding: "2rem",
+      }}
+    >
       <h1>Text Analyse</h1>
       <p>Geben Sie hier Ihren Text ein oder laden Sie eine Datei hoch.</p>
-      <br />
-      <Container>
+      <Container style={{ textAlign: "left" }}>
         <Form>
           <Form.Group controlId="formTextarea">
             <Form.Label>Geben Sie hier Ihren Text ein</Form.Label>
@@ -55,12 +75,12 @@ function TextAnalysePage() {
               as="textarea"
               value={text}
               onChange={handleTextChange}
-              placeholder="Geben Sie hier das Text ein"
+              placeholder="An einem warmen Sommertag..."
               rows={10}
               cols={50}
             />
           </Form.Group>
-          <Form.Group controlId="formFileUpload" className="mt-3">
+          {/* <Form.Group controlId="formFileUpload" className="mt-3">
             <Form.Label>Datei hochladen</Form.Label>
             <Form.Control
               type="file"
@@ -68,14 +88,29 @@ function TextAnalysePage() {
               onChange={handleFileUpload}
               lang="de"
             />
+          </Form.Group> */}
+          <Form.Group className="mt-3" controlId="publicSwitch">
+            <Form.Switch
+              name="public"
+              label="Öffentlich machen"
+              checked={isPublic}
+              onChange={() => {
+                setIsPublic((prev) => !prev);
+              }}
+            />
           </Form.Group>
         </Form>
       </Container>
       <br />
-      <Button className="mt-3" variant="primary" onClick={handleSubmit}>
+      <Button
+        className="mt-3"
+        variant="primary"
+        onClick={handleSubmit}
+        disabled={addUserDataMutation.isPending}
+      >
         Analysieren
       </Button>
-    </div>
+    </Card>
   );
 }
 
