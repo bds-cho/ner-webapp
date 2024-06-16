@@ -137,3 +137,21 @@ async function getPublicDataAll() {
     console.error("Error fetching all public data:", error);
   }
 }
+
+export async function deleteUserData(itemid) {
+  try {
+    const response = await fetch("/api/delete_user_data/"+itemid, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error deleteing user data:", error);
+  }
+}

@@ -39,7 +39,6 @@ function TextAnalysePage() {
     }
   };
 
-  //  TODO: CALL API ON SUBMIT (BACKEND NOT IMPLEMENTED YET)
   // Handle form submit
   const handleSubmit = async () => {
     if (text && fileContent) {

@@ -126,3 +126,14 @@ def get_public_data_all(request):
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
+def delete_data(request, pk):
+    if request.method == 'DELETE':
+        item = UserData.objects.get(id=pk)
+        item.delete()
+        return JsonResponse({'message': 'Text was deleted successfully!'}, status=200)
+    else:
+        return JsonResponse({'error': 'Only DELETE method is allowed'}, status=405)
+
+        
