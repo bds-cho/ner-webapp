@@ -47,9 +47,8 @@ export async function registerUser({ email, password, name, surname }) {
 }
 
 /**
- * 
- * @returns {Promise<{isAuthenticated: false} | {isAuthenticated: true; username: string}}>}
- 
+ *
+ * @returns {Promise<{isAuthenticated: false} | {isAuthenticated: true; username: string; first_name: string; last_name: string;}}>}
  */
 export async function getSession() {
   const response = await fetch("/api/session");
