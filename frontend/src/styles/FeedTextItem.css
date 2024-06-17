@@ -1,0 +1,41 @@
+.text-item-card {
+  max-width: 500px;
+  background-color: #f8f9fa;
+  margin: 0 auto;
+}
+
+.text-item-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.user-info {
+  margin-bottom: 10px;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.user-username {
+  margin: 0;
+  font-size: 0.9rem;
+  color: gray;
+  text-align: left;
+}
+
+.divider {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #aaa7ad;
+  margin: 0.5rem 0;
+}
+
+.text-content {
+  font-size: 1rem;
+  text-align: left;
+}
