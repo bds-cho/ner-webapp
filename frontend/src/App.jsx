@@ -9,6 +9,7 @@ import NewAccountPage from "./pages/login-registration/NewAccountPage";
 import TextAnalysePage from "./pages/TextAnalysePage";
 import UserFeedPage from "./pages/UserFeedPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditItemPage from "./pages/EditItemPage";
 
 import { AuthenticatedLayout } from "./pages/AuthenticatedLayout";
 import { UnauthenticatedLayout } from "./pages/Unauthenticatedlayout";
@@ -17,6 +18,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
+  {
+    path: "/edit-item/:itemId",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        path: "/edit-item/:itemId",
+        element: <EditItemPage />,
+      },
+    ],
+  },
   {
     path: "/profile",
     element: <AuthenticatedLayout />,

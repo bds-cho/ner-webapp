@@ -10,4 +10,5 @@ class UserData(models.Model):
     updated_at = models.DateTimeField(auto_now=True) # saves date upon every update
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
+    analyzed_text = models.TextField(default="")
     is_public = models.BooleanField(default=False)
