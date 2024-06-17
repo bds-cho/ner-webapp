@@ -94,7 +94,7 @@ def add_data(request):
 @csrf_exempt
 def get_user_data_all(request):
     if request.method == 'GET':
-        user_data = UserData.objects.filter(user=request.user)
+        user_data = UserData.objects.filter(user=request.user).order_by('-updated_at')
         serializer = GetDataSerializer(user_data, many=True)
         return JsonResponse(serializer.data, safe=False, content_type="application/json")
     else:
@@ -103,7 +103,7 @@ def get_user_data_all(request):
 @csrf_exempt
 def get_user_data_public(request):
     if request.method == 'GET':
-        user_data = UserData.objects.filter(user=request.user, is_public=True)
+        user_data = UserData.objects.filter(user=request.user, is_public=True).order_by('-updated_at')
         serializer = GetDataSerializer(user_data, many=True)
         return JsonResponse(serializer.data, safe=False)
     else:
@@ -112,7 +112,7 @@ def get_user_data_public(request):
 @csrf_exempt
 def get_user_data_private(request):
     if request.method == 'GET':
-        user_data = UserData.objects.filter(user=request.user, is_public=False)
+        user_data = UserData.objects.filter(user=request.user, is_public=False).order_by('-updated_at')
         serializer = GetDataSerializer(user_data, many=True)
         return JsonResponse(serializer.data, safe=False)
     else:
@@ -121,7 +121,7 @@ def get_user_data_private(request):
 @csrf_exempt
 def get_public_data_all(request):
     if request.method == 'GET':
-        public_data = UserData.objects.filter(is_public=True)
+        public_data = UserData.objects.filter(is_public=True).order_by('-updated_at')
         serializer = GetDataSerializer(public_data, many=True)
         return JsonResponse(serializer.data, safe=False)
     else:
