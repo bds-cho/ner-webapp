@@ -14,9 +14,8 @@
 - Username: admin
 - Password: password
 
-# install spacy
+# install spacy language model
 
-- pip install numpy==1.26.4
 - python3 -m spacy download de_core_news_sm
 
 <br>
