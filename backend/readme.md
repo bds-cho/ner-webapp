@@ -14,6 +14,11 @@
 - Username: admin
 - Password: password
 
+# install spacy
+
+- pip install numpy==1.26.4
+- python3 -m spacy download de_core_news_sm
+
 <br>
 <br>
 <br>
@@ -47,5 +52,3 @@ b) with pipenv ( = also a dependency manager):
 ## 2. step: I create the django project:
 
 - `django-admin startproject sksy_backend .` to create a django project in the current directory
-
-

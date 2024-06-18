@@ -15,7 +15,7 @@ function UserFeedPage() {
             <FeedTextItem
               key={index}
               user={item.user}
-              text={item.text}
+              analyzed_text={item.analyzed_text}
             ></FeedTextItem>
           ))
         ) : (
