@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 // ADD DATA
-export async function addUserData({ text, is_public }) {
+export async function addUserData({ text, is_public, model_id = 0 }) {
   const response = await fetch("/api/add_data/", {
     method: "POST",
     headers: {
@@ -10,6 +10,7 @@ export async function addUserData({ text, is_public }) {
     body: JSON.stringify({
       text: text, // string
       is_public: is_public, // bool
+      model_id: model_id, // int
     }),
   })
     .then((response) => response.json())

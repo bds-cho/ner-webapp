@@ -8,7 +8,11 @@ function TextAnalysePage() {
   const [text, setText] = useState("");
   const [fileContent, setFileContent] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+<<<<<<< HEAD
   const [errorMessage, setErrorMessage] = useState("");
+=======
+  const [model_id, setModel] = useState("0"); 
+>>>>>>> 800a9bd (add spacy model english basic and language selector)
 
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -23,6 +27,10 @@ function TextAnalysePage() {
     },
   });
 
+  //Handle model selection
+  const handleModelChange = (e) => {
+    setModel(e.target.value);
+  };
   // Handle text area input
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -50,11 +58,21 @@ function TextAnalysePage() {
       );
       return;
     }
+<<<<<<< HEAD
   
     setErrorMessage(""); // Clear any previous error message
     const content = text || fileContent;
     addUserDataMutation.mutate({ text: content, is_public: isPublic });
   };  
+=======
+
+    if (!text && !fileContent) {
+      console.error("Geben Sie das Text ein oder laden Sie eine Datei hoch");
+      return;
+    }
+    addUserDataMutation.mutate({ text, is_public: isPublic, model_id});
+  };
+>>>>>>> 800a9bd (add spacy model english basic and language selector)
 
   return (
     <Card
@@ -90,15 +108,33 @@ function TextAnalysePage() {
             />
           </Form.Group>
           <Form.Group className="mt-3" controlId="publicSwitch">
-            <Form.Switch
-              name="public"
-              label="Öffentlich machen"
-              checked={isPublic}
-              onChange={() => {
-                setIsPublic((prev) => !prev);
-              }}
-            />
-          </Form.Group>
+            </Form.Group>
+              <div className="row justify-content-between">
+                <div className="col">
+                  <Form.Switch
+                  name="public"
+                  label="Öffentlich machen"
+                  checked={isPublic}
+                  onChange={() => {
+                    setIsPublic((prev) => !prev);
+                  }}
+                  />  
+                </div>
+                    <div className="col">
+                      <div className="row justify-content-end">
+
+                        <div className="col">
+                        <Form.Select
+                        onChange={handleModelChange}
+                        defaultValue="0" 
+                        >
+                          <option value="0" >Deutsch</option>
+                          <option value="1">Englisch</option>
+                        </Form.Select>
+                      </div>
+                    </div>
+                  </div>
+                 </div>    
         </Form>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </Container>
