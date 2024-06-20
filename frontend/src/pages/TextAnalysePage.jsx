@@ -8,6 +8,7 @@ function TextAnalysePage() {
   const [text, setText] = useState("");
   const [fileContent, setFileContent] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -41,19 +42,19 @@ function TextAnalysePage() {
 
   // Handle form submit
   const handleSubmit = async () => {
-    if (text && fileContent) {
-      console.error(
-        "Entweder Text eingeben oder Datei hochladen, nicht beides",
+    if ((text && fileContent) || (!text && !fileContent)) {
+      setErrorMessage(
+        text && fileContent
+          ? "Entweder Text eingeben oder Datei hochladen, nicht beides"
+          : "Geben Sie das Text ein oder laden Sie eine Datei hoch"
       );
       return;
     }
-
-    if (!text && !fileContent) {
-      console.error("Geben Sie das Text ein oder laden Sie eine Datei hoch");
-      return;
-    }
-    addUserDataMutation.mutate({ text, is_public: isPublic });
-  };
+  
+    setErrorMessage(""); // Clear any previous error message
+    const content = text || fileContent;
+    addUserDataMutation.mutate({ text: content, is_public: isPublic });
+  };  
 
   return (
     <Card
@@ -79,7 +80,7 @@ function TextAnalysePage() {
               cols={50}
             />
           </Form.Group>
-          {/* <Form.Group controlId="formFileUpload" className="mt-3">
+          <Form.Group controlId="formFileUpload" className="mt-3">
             <Form.Label>Datei hochladen</Form.Label>
             <Form.Control
               type="file"
@@ -87,7 +88,7 @@ function TextAnalysePage() {
               onChange={handleFileUpload}
               lang="de"
             />
-          </Form.Group> */}
+          </Form.Group>
           <Form.Group className="mt-3" controlId="publicSwitch">
             <Form.Switch
               name="public"
@@ -99,6 +100,7 @@ function TextAnalysePage() {
             />
           </Form.Group>
         </Form>
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </Container>
       <br />
       <Button
