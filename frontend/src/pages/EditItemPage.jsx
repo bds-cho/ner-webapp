@@ -56,7 +56,7 @@ function EditItemPage() {
             />
           </Form.Group>
         </Form>
-
+        <br />
         <Button variant="primary" onClick={handleSaveChanges}>
           Change
         </Button>
