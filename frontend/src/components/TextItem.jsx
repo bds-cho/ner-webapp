@@ -6,8 +6,9 @@ import "../styles/EditButton.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
 
-const TextItem = ({ key_prop, text, is_public, onDelete, onEdit }) => {
+const TextItem = ({ key_prop, analyzed_text, is_public, onDelete, onEdit }) => {
   return (
     <Card className="mb-3 text-item-card">
       <Card.Body>
@@ -18,7 +19,7 @@ const TextItem = ({ key_prop, text, is_public, onDelete, onEdit }) => {
             </Badge>
           </Col>
           <Col className="text-center">
-            <Card.Text>{text}</Card.Text>
+            <Card.Text>{parse(analyzed_text)}</Card.Text>
           </Col>
           <Col xs="auto">
             <button className="delete-button" onClick={onDelete}>

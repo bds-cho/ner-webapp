@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 from .models import UserData
 from .serializers import GetDataSerializer, SaveDataSerializer
 
-from rest_framework import status
+# from spacy_implementation import *
+import spacy
+from spacy import displacy
 ########################################################
 
 def index(request):
@@ -17,6 +19,12 @@ def index(request):
     }
     return JsonResponse(res)
 
+
+def analyze_with_spacy(text):
+    nlp = spacy.load("de_core_news_sm")
+    doc1 = nlp(text)
+    html_string = displacy.render(doc1, style="ent", page=True)
+    return html_string
 ########################################################
 
 @csrf_exempt
@@ -87,9 +95,9 @@ def add_data(request):
         if serializer.is_valid():
             
             # TODO: run spacy model here and save the generated text in the db
-            # user_data = serializer.save(user=request.user, analyzed_text=######)
+            html_string = analyze_with_spacy(data.get('text'))
+            user_data = serializer.save(user=request.user, analyzed_text=html_string)
 
-            user_data = serializer.save(user=request.user)
             return JsonResponse({'id': user_data.id}, status=201)
         return JsonResponse(serializer.errors, status=400)
 
@@ -160,8 +168,8 @@ def update_data_by_id(request, id):
 
         item = UserData.objects.get(id=id)
         item.text = text
-        # TODO: use spacy to analyse and also replace analyzed_text property
-        # item.analyzed_text = ######
+        item.analyzed_text = analyze_with_spacy(text) # analyze text with spacy
+        
         item.save()
 
         return JsonResponse({'id': id}, status=201)

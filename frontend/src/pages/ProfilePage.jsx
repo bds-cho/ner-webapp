@@ -56,7 +56,7 @@ function Profile() {
             userDataAll.map((item) => (
               <TextItem
                 key={item.id}
-                text={item.text}
+                analyzed_text={item.analyzed_text}
                 is_public={item.is_public}
                 onDelete={() => handleDelete(item.id)}
                 onEdit={() => handleEdit(item.id)}
