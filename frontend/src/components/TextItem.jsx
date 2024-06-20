@@ -2,10 +2,12 @@ import React from "react";
 import { Badge, Card, Col, Row, Button } from "react-bootstrap";
 import "../styles/TextItem.css";
 import "../styles/DeleteButton.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import "../styles/EditButton.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-const TextItem = ({ key, text, is_public, onDelete }) => {
+const TextItem = ({ key_prop, text, is_public, onDelete, onEdit }) => {
   return (
     <Card className="mb-3 text-item-card">
       <Card.Body>
@@ -19,8 +21,13 @@ const TextItem = ({ key, text, is_public, onDelete }) => {
             <Card.Text>{text}</Card.Text>
           </Col>
           <Col xs="auto">
-            <button class="delete-button" onClick={onDelete}>
+            <button className="delete-button" onClick={onDelete}>
               <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          </Col>
+          <Col xs="auto">
+            <button className="edit-button" onClick={onEdit}>
+              <FontAwesomeIcon icon={faEdit} />
             </button>
           </Col>
         </Row>

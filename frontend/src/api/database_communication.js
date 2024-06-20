@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+// ADD DATA
 export async function addUserData({ text, is_public }) {
   const response = await fetch("/api/add_data/", {
     method: "POST",
@@ -7,8 +8,8 @@ export async function addUserData({ text, is_public }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      text, // string
-      is_public, // bool
+      text: text, // string
+      is_public: is_public, // bool
     }),
   })
     .then((response) => response.json())
@@ -22,6 +23,7 @@ export async function addUserData({ text, is_public }) {
   return response;
 }
 
+// GET DATA FROM A SPECIFIC USER
 export function useGetUserDataAll() {
   const query = useQuery({
     queryKey: ["get_user_data"],
@@ -109,6 +111,36 @@ async function getUserDataPrivate() {
   }
 }
 
+export function useGetUserDataById(id) {
+  const query = useQuery({
+    queryKey: ["get_user_data", id],
+    queryFn: () => getUserDataById(id),
+    retry: 1,
+  });
+  return query;
+}
+async function getUserDataById(id) {
+  const url = `/api/get_user_data_by_id/${id}/`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+}
+// GET DATA FROM ALL USERS
 export function useGetPublicDataAll() {
   const query = useQuery({
     queryKey: ["get_user_data"],
@@ -138,10 +170,12 @@ async function getPublicDataAll() {
   }
 }
 
+// DELETE DATA
 export async function deleteUserData(itemid) {
+  const url = `/api/delete_user_data/${itemid}/`;
   try {
-    const response = await fetch("/api/delete_user_data/"+itemid, {
-      method: "DELETE"
+    const response = await fetch(url, {
+      method: "DELETE",
     });
 
     if (!response.ok) {
@@ -153,5 +187,31 @@ export async function deleteUserData(itemid) {
     return data;
   } catch (error) {
     console.error("Error deleteing user data:", error);
+  }
+}
+
+// UPDATE DATA
+export async function updateDataById(id, text) {
+  const url = `/api/update_data_by_id/${id}/`;
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: text, // string
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
   }
 }

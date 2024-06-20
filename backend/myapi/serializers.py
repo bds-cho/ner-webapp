@@ -12,14 +12,7 @@ class GetDataSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     class Meta:
         model = UserData
-        fields = ['id', 'created_at', 'updated_at', 'text', 'is_public', 'user']
-
-# class GetDataSerializer(serializers.ModelSerializer):
-#     user = UserSerializer()
-#     class Meta:
-#         model = UserData
-#         fields = ['text', 'is_public', 'user']
-
+        fields = ['id', 'created_at', 'updated_at', 'text', 'analyzed_text', 'is_public', 'user']
 
 class SaveDataSerializer(serializers.ModelSerializer):
     class Meta:

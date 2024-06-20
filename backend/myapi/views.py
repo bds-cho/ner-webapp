@@ -85,6 +85,10 @@ def add_data(request):
         data = json.loads(request.body)
         serializer = SaveDataSerializer(data=data)
         if serializer.is_valid():
+            
+            # TODO: run spacy model here and save the generated text in the db
+            # user_data = serializer.save(user=request.user, analyzed_text=######)
+
             user_data = serializer.save(user=request.user)
             return JsonResponse({'id': user_data.id}, status=201)
         return JsonResponse(serializer.errors, status=400)
@@ -119,6 +123,18 @@ def get_user_data_private(request):
         return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
 
 @csrf_exempt
+def get_user_data_by_id(request, id):
+    if request.method == 'GET':
+        try:
+            user_data = UserData.objects.get(id=id, user=request.user)
+            serializer = GetDataSerializer(user_data)
+            return JsonResponse(serializer.data, safe=False, content_type="application/json")
+        except UserData.DoesNotExist:
+            return JsonResponse({'error': 'Data not found'}, status=404)
+    else:
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+
+@csrf_exempt
 def get_public_data_all(request):
     if request.method == 'GET':
         public_data = UserData.objects.filter(is_public=True).order_by('-updated_at')
@@ -136,4 +152,18 @@ def delete_data(request, pk):
     else:
         return JsonResponse({'error': 'Only DELETE method is allowed'}, status=405)
 
-        
+@csrf_exempt
+def update_data_by_id(request, id):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        text = data.get("text")
+
+        item = UserData.objects.get(id=id)
+        item.text = text
+        # TODO: use spacy to analyse and also replace analyzed_text property
+        # item.analyzed_text = ######
+        item.save()
+
+        return JsonResponse({'id': id}, status=201)
+    else:
+        return JsonResponse({'error': 'Only PUT method is allowed'}, status=405)
