@@ -6,6 +6,7 @@ import {
   updateDataById,
 } from "../api/database_communication.js";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function EditItemPage() {
   const { itemId } = useParams();
@@ -15,6 +16,19 @@ function EditItemPage() {
   const { data: userData } = useGetUserDataById(itemId);
 
   const [editedText, setEditedText] = useState("");
+
+  const queryClient = useQueryClient();
+
+  const updateMutation = useMutation({
+    mutationFn: (newText) => updateDataById(itemId, newText),
+    onSuccess: () => {
+      queryClient.invalidateQueries("get_user_data");
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 10);
+    },
+  });
 
   useEffect(() => {
     if (userData) {
@@ -27,9 +41,7 @@ function EditItemPage() {
   };
 
   const handleSaveChanges = () => {
-    updateDataById(userData.id, editedText);
-
-    navigate("/profile");
+    updateMutation.mutate(editedText);
   };
 
   return (
