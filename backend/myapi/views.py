@@ -23,7 +23,7 @@ def index(request):
 def analyze_with_spacy(text):
     nlp = spacy.load("de_core_news_sm")
     doc1 = nlp(text)
-    html_string = displacy.render(doc1, style="ent", page=True)
+    html_string = displacy.render(doc1, style="ent", page=False)
     return html_string
 ########################################################
 
