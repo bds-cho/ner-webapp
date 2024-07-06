@@ -11,27 +11,21 @@ import parse from "html-react-parser";
 const TextItem = ({ key_prop, analyzed_text, is_public, onDelete, onEdit }) => {
   return (
     <Card className="mb-3 text-item-card">
-      <Card.Body>
-        <Row>
-          <Col xs="auto">
-            <Badge bg={is_public ? "success" : "danger"}>
-              {is_public ? "Public" : "Private"}
-            </Badge>
-          </Col>
-          <Col className="text-center">
-            <Card.Text>{parse(analyzed_text)}</Card.Text>
-          </Col>
-          <Col xs="auto">
-            <button className="delete-button" onClick={onDelete}>
-              <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
-          </Col>
-          <Col xs="auto">
-            <button className="edit-button" onClick={onEdit}>
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-          </Col>
-        </Row>
+      <Card.Body className="pt-2">
+        <Badge className="font-monospace" bg={is_public ? "success" : "danger"}>
+          {is_public ? "Public" : "Private"}
+        </Badge>
+        <Card.Text className="mt-2 text-start">
+          {parse(analyzed_text)}
+        </Card.Text>
+        <div className="d-flex justify-content-end gap-2">
+          <button className="edit-button" onClick={onEdit}>
+            Bearbeiten <FontAwesomeIcon className="ms-1" icon={faEdit} />
+          </button>
+          <button className="delete-button" onClick={onDelete}>
+            Löschen <FontAwesomeIcon className="ms-1" icon={faTrashAlt} />
+          </button>
+        </div>
       </Card.Body>
     </Card>
   );
