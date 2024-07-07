@@ -26,7 +26,7 @@ def index(request):
 def analyze_with_spacy(text, model_id = 0):
     nlp = spacy.load(spacy_models[model_id])
     doc1 = nlp(text)
-    html_string = displacy.render(doc1, style="ent", page=True)
+    html_string = displacy.render(doc1, style="ent", page=False)
     return html_string
 
 @csrf_exempt
