@@ -11,7 +11,10 @@ from .serializers import GetDataSerializer, SaveDataSerializer
 # from spacy_implementation import *
 import spacy
 from spacy import displacy
-########################################################
+
+# supported spacy models have to be downloaded with the following command
+# python -m spacy download <model_name>
+spacy_models = ["de_core_news_sm", "en_core_web_sm"] 
 
 def index(request):
     res = {
@@ -20,12 +23,11 @@ def index(request):
     return JsonResponse(res)
 
 
-def analyze_with_spacy(text):
-    nlp = spacy.load("de_core_news_sm")
+def analyze_with_spacy(text, model_id = 0):
+    nlp = spacy.load(spacy_models[model_id])
     doc1 = nlp(text)
     html_string = displacy.render(doc1, style="ent", page=True)
     return html_string
-########################################################
 
 @csrf_exempt
 def loginUser(request):
@@ -95,7 +97,7 @@ def add_data(request):
         if serializer.is_valid():
             
             # TODO: run spacy model here and save the generated text in the db
-            html_string = analyze_with_spacy(data.get('text'))
+            html_string = analyze_with_spacy(data.get('text'),int(data.get('model_id')))
             user_data = serializer.save(user=request.user, analyzed_text=html_string)
 
             return JsonResponse({'id': user_data.id}, status=201)
