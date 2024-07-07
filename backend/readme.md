@@ -1,6 +1,6 @@
 # How to start the server
 
-- navigate to the `SkSy-backend` directory
+- navigate to the `backend` directory
 - make sure to have `pipenv` installed
 - run `pipenv install` to create the virtual environment and install dependencies
 - run `pipenv shell` to activate the virtual environment
@@ -14,9 +14,10 @@
 - Username: admin
 - Password: password
 
-# install spacy language model
+# install spacy language models
 
 - python3 -m spacy download de_core_news_sm
+- python3 -m spacy download en_core_web_sm
 
 <br>
 <br>
