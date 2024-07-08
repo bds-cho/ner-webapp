@@ -23,10 +23,17 @@ function NewAccountPage() {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      registerUserMutation.mutate({ name, surname, email, password });
-    } else {
+
+    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+
+    if (password !== confirmPassword) {
       alert("Passwords do not match!");
+    } else if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be 6-12 characters long and contain at least 2 digits.",
+      );
+    } else {
+      registerUserMutation.mutate({ name, surname, email, password });
     }
   };
 

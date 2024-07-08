@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .models import UserData
 from .serializers import GetDataSerializer, SaveDataSerializer
 
+import re
+
 # from spacy_implementation import *
 import spacy
 from spacy import displacy
@@ -60,6 +62,14 @@ def registerUser(request):
         name = data.get('name')
         surname = data.get('surname')
        
+
+        password_regex = re.compile(r'^[a-zA-Z0-9!@#$%^&*]{6,16}$')
+        if not password_regex.match(password):
+            return JsonResponse(
+                {'message': 'Password must be 6-16 characters long and contain at least 2 digits.'}, 
+                status=400
+            )
+        
         # Perform user registration logic here
         if User.objects.filter(username=email).exists():
             response_string = f"User with email {email} already exists"
