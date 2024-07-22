@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile_frontend
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend1
+    networks:
+      - app-network
+
+  backend1:
+    build:
+      context: .
+      dockerfile: Dockerfile_backend
+    container_name: backend1
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16.3-alpine3.20
+    container_name: db
+    environment:
+      POSTGRES_DB: maindb
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
