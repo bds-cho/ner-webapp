@@ -21,17 +21,19 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    environment:
+      - RUN_MIGRATION=true
 
   backend2:
     build:
       context: .
       dockerfile: Dockerfile_backend
     container_name: backend2
+    networks:
+      - app-network
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - app-network
 
   db:
     image: postgres:16.3-alpine3.20

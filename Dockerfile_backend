@@ -7,4 +7,6 @@ COPY ./backend/ /home/
 WORKDIR /home/
 RUN pipenv install --system
 EXPOSE 8000
-ENTRYPOINT ["python3","manage.py","runserver","0.0.0.0:8000"]
+
+# ENTRYPOINT MUST BE CHANGED LATER IN PROD, AS DB WILL ALREADY HAVE TABLES
+ENTRYPOINT ["sh","-c","if [ ! -z \"$RUN_MIGRATION\" ]; then python3 manage.py makemigrations myapi; python3 manage.py migrate; fi && python3 manage.py runserver 0.0.0.0:8000"]
