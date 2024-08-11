@@ -6,6 +6,7 @@ RUN pip3 install pipenv tzdata psycopg2
 COPY ./backend/ /home/
 WORKDIR /home/
 RUN pipenv install --system
+RUN python3 -m spacy download de_core_news_sm && python3 -m spacy download en_core_web_sm
 EXPOSE 8000
 
 # ENTRYPOINT MUST BE CHANGED LATER IN PROD, AS DB WILL ALREADY HAVE TABLES
