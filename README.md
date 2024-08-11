@@ -6,9 +6,9 @@
 </p>
 
 ## Deploying NER-Webapp on your host
-1. Clone this repository and change directory
-2. Run `docker compose up` in your terminal
-3. Open browser and open `http://localhost`
+1. Clone this repository, change directory and open terminal
+2. Run `docker compose up` in the terminal
+3. Open `http://localhost` in your browser
 
 ## Getting started for development
 - TODO
