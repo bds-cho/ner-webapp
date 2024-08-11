@@ -1,6 +1,9 @@
-# SkSys - Named Entity Recognition
+# Named Entity Recognition (NER) Web Application
+
+## Deploying NER-Webapp on your host
+1. Clone this repository and change directory
+2. Run `docker compose up` in your terminal
+3. Open browser and open `http://localhost`
 
 ## Getting started for development
-
-- navigate to the backend directory and start the development server via `python manage.py runserver`
-- navigate to the frontend directory and start the development server via `npm run dev`
+- TODO
