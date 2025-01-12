@@ -78,11 +78,12 @@ module "postgre" {
 }
 
 /*
-  CUSTOM "/ETC/HOSTS" FILE
+  SETUP CONTROLLER
   WARNING: NO IDEMPOTENCE HERE! DESTRUCTION CAN BE OUT OF ORDER.
 */
 
-resource "null_resource" "custom_hosts" {
+resource "null_resource" "setup" {
+  # Create /etc/hosts file
   provisioner "local-exec" {
     when = create
     command = <<EOT
@@ -93,12 +94,20 @@ resource "null_resource" "custom_hosts" {
       echo "${module.postgre.postgre_ip} postgre" >> hosts
     EOT
   }
+  # Copy hosts file to the controller
   provisioner "local-exec" {
     when = create
     command = <<EOT
-      ssh -i ./controller_pkey ubuntu@${module.controller.controller_public_ip} sudo mv /etc/hosts /etc/hosts.bak
+      ssh -i ./controller_pkey -o StrictHostKeyChecking=accept-new ubuntu@${module.controller.controller_public_ip} sudo mv /etc/hosts /etc/hosts.bak
       scp -i ./controller_pkey hosts ubuntu@${module.controller.controller_public_ip}:~/
       ssh -i ./controller_pkey ubuntu@${module.controller.controller_public_ip} sudo mv /home/ubuntu/hosts /etc/hosts
+    EOT
+  }
+  # Copy ansible workspace to controller
+  provisioner "local-exec" {
+    when = create
+    command = <<EOT
+      scp -i ./controller_pkey -r ../ansible ubuntu@${module.controller.controller_public_ip}:~/
     EOT
   }
   provisioner "local-exec" {

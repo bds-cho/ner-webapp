@@ -53,7 +53,8 @@ resource "aws_instance" "controller" {
     apt install -y software-properties-common git
     add-apt-repository --yes --update ppa:ansible/ansible
     apt install -y ansible
-    echo "${var.ansible_node_pkey}" > /etc/ansible/nodes_pkey
+    echo "${var.ansible_node_pkey}" > /home/ubuntu/.ssh/id_rsa
+    chmod 400 /home/ubuntu/.ssh/id_rsa
   EOL
 }
 
