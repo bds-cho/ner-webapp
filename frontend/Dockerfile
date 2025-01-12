@@ -5,7 +5,7 @@ RUN npm install
 RUN npm run build
 
 FROM nginx:stable-alpine
-COPY --from=0 /home/dist /home
+COPY --from=0 /home/dist /var/www/html
 COPY ./nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 ENTRYPOINT ["nginx","-g","daemon off;"]
