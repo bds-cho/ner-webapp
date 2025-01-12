@@ -61,7 +61,7 @@ resource "aws_instance" "controller" {
 resource "local_file" "controller_pkey" {
   content  = tls_private_key.controlle_rsa.private_key_openssh
   filename = "controller_pkey"
-  #file_permission = 0400
+  file_permission = 0400
 }
 
 # Outputs for inter-module dependency resolution
