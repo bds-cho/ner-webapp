@@ -1,8 +1,7 @@
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile_frontend
+    image: ner/frontend
+    build: ./frontend
     container_name: nginx
     ports:
       - "80:80"
@@ -12,9 +11,8 @@ services:
       - app-network
 
   backend1:
-    build:
-      context: .
-      dockerfile: Dockerfile_backend
+    image: ner/backend
+    build: ./backend
     container_name: backend1
     depends_on:
       db:
@@ -25,9 +23,8 @@ services:
       - RUN_MIGRATION=true
 
   backend2:
-    build:
-      context: .
-      dockerfile: Dockerfile_backend
+    image: ner/backend
+    build: ./backend
     container_name: backend2
     networks:
       - app-network

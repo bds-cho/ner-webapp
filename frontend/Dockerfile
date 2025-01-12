@@ -1,5 +1,5 @@
 FROM node:lts-alpine
-COPY ./frontend/ /home/
+COPY ./ /home/
 WORKDIR /home/
 RUN npm install
 RUN npm run build

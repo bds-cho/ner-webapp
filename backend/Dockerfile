@@ -3,7 +3,7 @@ ENV PYTHONUNBUFFERED=1
 RUN apt update && apt upgrade -y
 RUN apt install -y python3-dev python3-pip build-essential libpq-dev
 RUN pip3 install pipenv tzdata psycopg2
-COPY ./backend/ /home/
+COPY ./ /home/
 WORKDIR /home/
 RUN pipenv install --system
 RUN python3 -m spacy download de_core_news_sm && python3 -m spacy download en_core_web_sm
