@@ -1,0 +1,8 @@
+[webserver]
+frontend
+
+[appserver]
+backend
+
+[db]
+postgre
