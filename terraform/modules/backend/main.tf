@@ -1,17 +1,3 @@
-# Global
-variable "vpc_id" {
-  type = string
-}
-variable "controller_ip" {
-  type = string
-}
-variable "ansible_node_pubkey_name" {
-  type = string
-}
-variable "frontend_ip" {
-  type = string
-}
-
 # Create SG with Ingress and Outgress rules
 resource "aws_security_group" "allow_frontend" {
   name        = "allow_frontend"
@@ -48,9 +34,4 @@ resource "aws_instance" "backend" {
   associate_public_ip_address = true # Temporary
   vpc_security_group_ids = [aws_security_group.allow_frontend.id]
   key_name = var.ansible_node_pubkey_name
-}
-
-# Outputs for inter-module dependency resolution
-output "backend_ip" {
-  value = aws_instance.backend.private_ip
 }

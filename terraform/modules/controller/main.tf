@@ -1,11 +1,3 @@
-# Global
-variable "vpc_id" {
-  type = string
-}
-variable "ansible_node_pkey" {
-  type = string
-}
-
 # Create security group with Ingress and Outgress rules
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
@@ -55,20 +47,51 @@ resource "aws_instance" "controller" {
     apt install -y ansible
     echo "${var.ansible_node_pkey}" > /home/ubuntu/.ssh/id_rsa
     chmod 400 /home/ubuntu/.ssh/id_rsa
+    chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa
   EOL
 }
 
 # Export private key for SSHing from localhost
 resource "local_file" "controller_pkey" {
   content  = tls_private_key.controlle_rsa.private_key_openssh
-  filename = "controller_pkey"
+  filename = "${path.module}/controller_pkey"
   file_permission = 0400
 }
 
-# Outputs for inter-module dependency resolution
-output "controller_ip" {
-  value = aws_instance.controller.private_ip
-}
-output "controller_public_ip" {
-  value = aws_instance.controller.public_ip
+# Controller setup
+resource "null_resource" "setup" {
+  # Create custom /etc/hosts file
+  provisioner "local-exec" {
+    when = create
+    command = <<EOT
+      echo "127.0.0.1 locahost" > ${path.module}/hosts
+      echo "${aws_instance.controller.private_ip} controller" >> ${path.module}/hosts
+      echo "${var.frontend_ip} frontend" >> ${path.module}/hosts
+      echo "${var.backend_ip} backend" >> ${path.module}/hosts
+      echo "${var.postgre_ip} postgre" >> ${path.module}/hosts
+    EOT
+  }
+  # Copy /etc/hosts file to the controller
+  provisioner "local-exec" {
+    when = create
+    command = <<EOT
+      ssh -i ${path.module}/controller_pkey -o StrictHostKeyChecking=accept-new ubuntu@${aws_instance.controller.public_ip} sudo mv /etc/hosts /etc/hosts.bak
+      scp -i ${path.module}/controller_pkey ${path.module}/hosts ubuntu@${aws_instance.controller.public_ip}:~/
+      ssh -i ${path.module}/controller_pkey ubuntu@${aws_instance.controller.public_ip} sudo mv /home/ubuntu/hosts /etc/hosts
+    EOT
+  }
+  # Copy ansible workspace to controller
+  provisioner "local-exec" {
+    when = create
+    command = <<EOT
+      scp -i ${path.module}/controller_pkey -r ${path.root}/../ansible ubuntu@${aws_instance.controller.public_ip}:~/
+    EOT
+  }
+  # Cleanup on destroy
+  provisioner "local-exec" {
+    when = destroy
+    command = <<EOT
+      rm -f hosts
+    EOT
+  }
 }

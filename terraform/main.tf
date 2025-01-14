@@ -1,31 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.60.0"
-    }
-  }
-}
-
-provider "aws" {
-  region     = "eu-central-1"
-  access_key = var.aws_access_id
-  secret_key = var.aws_access_secret
-}
-
-/*
-  VARIABLES
-*/
-
-variable "aws_access_id" {}
-
-variable "aws_access_secret" {}
-
-variable "az" {
-  type    = string
-  default = "eu-central-1a"
-}
-
 /*
   REQUIRED RESOURCES
 */
@@ -52,6 +24,9 @@ module "controller" {
   source = "./modules/controller"
   vpc_id = data.aws_vpc.default.id
   ansible_node_pkey = tls_private_key.ansible_node_rsa.private_key_openssh
+  frontend_ip = module.frontend.frontend_ip
+  backend_ip = module.backend.backend_ip
+  postgre_ip = module.postgre.postgre_ip
 }
 
 module "frontend" {
@@ -75,45 +50,4 @@ module "postgre" {
   vpc_id = data.aws_vpc.default.id
   ansible_node_pubkey_name = aws_key_pair.ansible_node.key_name
   backend_ip = module.backend.backend_ip
-}
-
-/*
-  SETUP CONTROLLER
-  WARNING: NO IDEMPOTENCE HERE! DESTRUCTION CAN BE OUT OF ORDER.
-*/
-
-resource "null_resource" "setup" {
-  # Create /etc/hosts file
-  provisioner "local-exec" {
-    when = create
-    command = <<EOT
-      echo "127.0.0.1 locahost" > hosts
-      echo "${module.controller.controller_ip} controller" >> hosts
-      echo "${module.frontend.frontend_ip} frontend" >> hosts
-      echo "${module.backend.backend_ip} backend" >> hosts
-      echo "${module.postgre.postgre_ip} postgre" >> hosts
-    EOT
-  }
-  # Copy hosts file to the controller
-  provisioner "local-exec" {
-    when = create
-    command = <<EOT
-      ssh -i ./controller_pkey -o StrictHostKeyChecking=accept-new ubuntu@${module.controller.controller_public_ip} sudo mv /etc/hosts /etc/hosts.bak
-      scp -i ./controller_pkey hosts ubuntu@${module.controller.controller_public_ip}:~/
-      ssh -i ./controller_pkey ubuntu@${module.controller.controller_public_ip} sudo mv /home/ubuntu/hosts /etc/hosts
-    EOT
-  }
-  # Copy ansible workspace to controller
-  provisioner "local-exec" {
-    when = create
-    command = <<EOT
-      scp -i ./controller_pkey -r ../ansible ubuntu@${module.controller.controller_public_ip}:~/
-    EOT
-  }
-  provisioner "local-exec" {
-    when = destroy
-    command = <<EOT
-      rm -f hosts
-    EOT
-  }
 }
