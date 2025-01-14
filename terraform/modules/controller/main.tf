@@ -91,7 +91,7 @@ resource "null_resource" "setup" {
   provisioner "local-exec" {
     when = destroy
     command = <<EOT
-      rm -f hosts
+      rm -f ${path.module}/hosts
     EOT
   }
 }
