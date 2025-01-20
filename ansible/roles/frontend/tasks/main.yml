@@ -1,2 +1,36 @@
 ---
-# tasks file for frontend
+
+# tasks for nginx
+
+- name: be sure apt is updated
+  apt:
+    update_cache: yes
+  tags: nginx
+
+- name: be sure nginx is installed
+  apt: name=nginx state=present
+  tags: nginx
+
+- name: be sure config file is imported
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+  notify:
+    - restart nginx
+  tags: nginx
+
+- name: be sure nginx is running and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+# tasks for static files
+
+- name: copy static files
+  copy:
+    src: index.html
+    dest: /var/www/html
+    mode: 0644
+  tags: frontend
